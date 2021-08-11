@@ -1,5 +1,3 @@
-var sprite ;
-
 class boardscene extends Phaser.Scene{
 
     constructor() {
@@ -37,30 +35,27 @@ class boardscene extends Phaser.Scene{
 
             this.zero_dice = this.add.image((displayWidth/2),(displayHeight/2), 'zero_dice').setInteractive();
 
-            sprite = this.add.sprite(200,200, 'dice_role').setOrigin(0.5,0.5);
-           
-            this.frames = this.anims.generateFrameNumbers('dice_role', { start: 0, end: 6 });
+            
+       
+            var i =100;
+            this.zero_dice.on('pointerdown',  function(pointer){
+                this.sprite = this.add.sprite(i,i, 'dice_role').setOrigin(0.5,0.5);
+                this.frames = this.anims.generateFrameNumbers('dice_role', { start: 0, end: 6 });
+                this.sprite.anims.create({
+                    key: 'rolling',
+                    frames: this.frames,
+                    frameRate: 20,
+                    repeat: 0,
+                    hideOnComplete: true
+     
+                });
+                this.sprite.anims.play('rolling', false);
+                i+=20;
+            } ,this);
 
-            sprite.anims.create({
-                key: 'rolling',
-                frames: this.frames,
-                frameRate: 20,
-                repeat: 0,
-                hideOnComplete: true
+          //  this.zero_dice.on('pointerdown',  this.myMethod("Fuck"), context);
 
-            });
-
-           // this.sprite.anims.play('rolling', true);
-                   
-              
-            var i =1;
-            this.zero_dice.on('pointerdown', function (pointer) {
-                
-               console.log("fuck");
-                sprite.setPosition(700,500);
-                sprite.anims.play('rolling', false);
-                i++;
-            });
+          
 
 
 
@@ -85,17 +80,23 @@ class boardscene extends Phaser.Scene{
             this.yellow_guti4 = this.add.image((displayWidth/2)+200,(displayHeight/2)+200, 'yellow_guti').setOrigin(0.5,0.5);
             
 
-
-
             // var i= 1;
            // setInterval(function(){    sprite.anims.play('rolling', true);  }, 10000);
 
         }
 
+
+
+
         update(time, delta){
              
         }
 
+
+        
+
+
+    
        
 
     
@@ -103,3 +104,23 @@ class boardscene extends Phaser.Scene{
 }
 
 
+/*
+
+
+this.sprite = this.add.sprite(200,200, 'dice_role').setOrigin(0.5,0.5);
+       
+           this.frames = this.anims.generateFrameNumbers('dice_role', { start: 0, end: 6 });
+
+           this.sprite.anims.create({
+               key: 'rolling',
+               frames: this.frames,
+               frameRate: 20,
+               repeat: 0,
+               hideOnComplete: true
+
+           });
+            this.sprite.anims.play('rolling', false);
+
+
+
+*/
