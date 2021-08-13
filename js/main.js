@@ -4,6 +4,7 @@ var config = {
     type: Phaser.AUTO,
     width: displayWidth,
     height: displayHeight,
+    backgroundColor: 0x220889,
     physics: {
         default: 'arcade',
         arcade: {
@@ -12,5 +13,6 @@ var config = {
     },
     scene: [boardscene]
 };
+
 
 var game = new Phaser.Game(config);
