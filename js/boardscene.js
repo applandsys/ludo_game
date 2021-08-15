@@ -110,14 +110,35 @@ class boardscene extends Phaser.Scene{
            // setInterval(function(){    sprite.anims.play('rolling', true);  }, 10000);
 
            //this.player_one_dice_placeholder =  this.add.image((displayWidth/2)-300,(displayHeight/2)+550,'dice_placeholder');
+		   
+
+
+		   
+		/*    setInterval(function(){ 
+
+				$.ajax({
+						type:'POST',
+						url:"http://localhost/ludo_backend/api/player_create",
+						data:{"action":"player_create"},
+						dataType: 'json',
+						success: function(data){		
+							console.log(data);
+						},
+						error: function(data){
+							
+						}
+						
+				});
+				
+		   }, 300); */
+		   
 
         }
 
 
         update(time, delta){
         
-           // this.blue_guti1.x =     player1GutiPos[0].x +=1;
-           // this.blue_guti1.y =     player1GutiPos[0].y +=1;
+          // realtime update
         }
 
     
