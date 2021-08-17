@@ -15,7 +15,7 @@ var config = {
             gravity: { y: 0 }
         }
     },
-    scene: [lobbyscene,boardscene]
+    scene: [signup,lobbyscene,boardscene]
 };
 
 

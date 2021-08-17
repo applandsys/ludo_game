@@ -2,17 +2,13 @@
 class boardscene extends Phaser.Scene{
 
     constructor() {
-        super('boardscene')
+        super('boardscene');
     }
-
-    
-//guti_init_post[0].x = 300;
-
 
         preload(){
             this.objects = {};
 
-            this.load.image('board', 'assets/board.jpg');
+            this.load.image('board', 'assets/board.png');
             this.load.image('zero_dice', 'assets/zero.png');
 
 
@@ -41,10 +37,12 @@ class boardscene extends Phaser.Scene{
         }
 
         create (){
+            
+               
             const board = this.add.image((displayWidth/2),(displayHeight/2), 'board');
             //board.anchor.setTo(0);
             board.setOrigin(0.5,0.5);
-            board.setScale(3,3);
+            board.setScale(1.5,1.5);
 
             this.zero_dice_player_one = this.add.image((displayWidth/2)-300,(displayHeight/2)+550, 'zero_dice').setInteractive();
             this.zero_dice_player_two = this.add.image((displayWidth/2)+300,(displayHeight/2)-550, 'zero_dice').setInteractive();
@@ -52,10 +50,10 @@ class boardscene extends Phaser.Scene{
             
             this.sprite ='';
           
-            this.random_number  = Phaser.Math.Between(1, 6);
+            //this.random_number  = Phaser.Math.Between(1, 6);
 
             this.zero_dice_player_one.on('pointerdown',  function(pointer){
-
+  
                 this.random_number  = Phaser.Math.Between(1, 6);
 
                 this.sound.play('dice_role_sound');
@@ -73,14 +71,26 @@ class boardscene extends Phaser.Scene{
                 this.sprite.on('animationcomplete', function (anim, frame) {
                     this.dice_postion = this.add.image((displayWidth/2)-300,(displayHeight/2)+550,'dice_'+this.random_number);
                 }, this);
+
+                $.ajax({
+                    type:'POST',
+                    url: BASE_URL+"api/player_diceroll",
+                    data:{"action":"player_diceroll","room_id":player_data.player_room,"player_id":player_data.player_id,"player_number":player_data.player_position,"dice_number":this.random_number},
+                    dataType: 'json',
+                    success: function(data){	
+                        console.log(data);  
+                    },
+                    error: function(data){
+                        
+                    }    
+                });
+
+                game_state.play_status=1;
     
 
             } ,this);
 
-            
-
-
-          
+             
           // Player 1 //  
           this.blue_guti1 = this.add.image(player1GutiPos[0].x,player1GutiPos[0].y, 'blue_guti').setOrigin(0.5,0.5);
           this.blue_guti2 = this.add.image((displayWidth/2)-320,(displayHeight/2)+320, 'blue_guti').setOrigin(0.5,0.5);
@@ -131,6 +141,8 @@ class boardscene extends Phaser.Scene{
 				});
 				
 		   }, 300); */
+
+
 		   
 
         }
@@ -138,7 +150,32 @@ class boardscene extends Phaser.Scene{
 
         update(time, delta){
         
-          // realtime update
+            if(  game_state.activity_seen =='pending'){
+
+                 console.log("Himake chodar time hoise");
+                if( game_state.play_status =='diceroll'){
+                   
+                    this.sound.play('dice_role_sound');
+                    this.sprite = this.add.sprite((displayWidth/2)-300,(displayHeight/2)+550, 'dice_role').setOrigin(0.5,0.5);
+                    this.frames = this.anims.generateFrameNumbers('dice_role', { start: 0, end: 6 });
+                    this.sprite.anims.create({
+                        key: 'rolling',
+                        frames: this.frames,
+                        frameRate: 20,
+                        repeat: 0,
+                        hideOnComplete: true     
+                    });
+                    this.sprite.anims.play('rolling', false);
+    
+                    this.sprite.on('animationcomplete', function (anim, frame) {
+                        this.dice_postion = this.add.image((displayWidth/2)-300,(displayHeight/2)+550,'dice_'+game_state.dice_number);
+                    }, this);
+    
+
+                }
+
+                game_state.activity_seen = null;
+            }
         }
 
     
